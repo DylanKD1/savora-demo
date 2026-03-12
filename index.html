@@ -20,57 +20,89 @@
       --success:#48bb78; --error:#fc5c65; --warning:#f6c90e;
       --text-main:#e8edf5; --text-muted:#8899aa;
       --font-heading:'Cormorant Garamond',serif; --font-body:'DM Sans',sans-serif;
-      --banner-h:44px; --promo-h:0px; --nav-w:270px;
+      --banner-h:44px; --nav-w:270px;
       --transition:0.35s cubic-bezier(0.4,0,0.2,1);
     }
-    body.promo-visible { --promo-h: 46px; }
 
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     html{scroll-behavior:smooth;}
     *:focus-visible{outline:2px solid var(--highlight);outline-offset:3px;border-radius:4px;}
-    body{background-color:var(--bg-dark);color:var(--text-main);font-family:var(--font-body);display:flex;overflow-x:hidden;padding-top:calc(var(--banner-h) + var(--promo-h));}
+    body{background-color:var(--bg-dark);color:var(--text-main);font-family:var(--font-body);display:flex;overflow-x:hidden;padding-top:var(--banner-h);}
     body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:9998;opacity:0.4;}
     .sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);border:0;}
     .required{color:var(--error);}
 
-    /* ── PROMO BANNER ── */
-    #promoBanner {
-      position:fixed; top:var(--banner-h); left:0; width:100%; height:var(--promo-h);
-      background:linear-gradient(90deg,#0a1e3a,#112a50,#0a1e3a);
-      border-bottom:1px solid rgba(126,184,247,0.2);
-      display:none; align-items:center; justify-content:center; gap:14px;
-      z-index:2090; overflow:hidden; transition:height 0.4s ease;
-    }
-    #promoBanner.show { display:flex; }
-    .promo-text { font-size:0.8rem; color:var(--accent-bright); letter-spacing:1.5px; text-align:center; }
-    .promo-text strong { color:var(--highlight); }
-    .promo-cta {
-      background:var(--highlight); color:#04080f; padding:5px 14px; border-radius:5px;
-      font-size:0.72rem; font-weight:700; text-decoration:none; letter-spacing:1px;
-      text-transform:uppercase; transition:var(--transition); white-space:nowrap;
-    }
-    .promo-cta:hover{filter:brightness(1.1);}
-    .promo-close {
-      position:absolute; right:16px; background:none; border:none;
-      color:var(--silver-dim); cursor:pointer; font-size:1.1rem; line-height:1;
-    }
-    .promo-close:hover{color:var(--accent-bright);}
+    /* ── TOP BAR ── */
+    .greeting-banner{position:fixed;top:0;left:0;width:100%;height:var(--banner-h);background:linear-gradient(90deg,#04080f 0%,#0a1628 50%,#04080f 100%);border-bottom:1px solid rgba(126,184,247,0.1);z-index:2100;display:flex;justify-content:center;align-items:center;}
 
-    /* ── GREETING BANNER ── */
-    .greeting-banner{position:fixed;top:0;left:0;width:100%;height:var(--banner-h);background:linear-gradient(90deg,#04080f 0%,#0a1628 40%,#112040 60%,#04080f 100%);border-bottom:1px solid rgba(126,184,247,0.15);color:var(--accent);z-index:2100;display:flex;justify-content:center;align-items:center;gap:12px;font-size:0.75rem;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;}
-    .greeting-banner i{color:var(--highlight);opacity:0.9;}
+    /* ── LANGUAGE DROPDOWN ── */
+    .lang-dropdown{position:relative;}
+    .lang-trigger{
+      display:flex;align-items:center;gap:8px;
+      background:rgba(126,184,247,0.06);border:1px solid rgba(126,184,247,0.18);
+      color:var(--accent);padding:6px 14px 6px 12px;border-radius:6px;
+      font-size:0.72rem;font-family:var(--font-body);letter-spacing:1.5px;
+      cursor:pointer;transition:var(--transition);
+    }
+    .lang-trigger:hover,.lang-trigger.open{background:var(--highlight-dim);border-color:var(--highlight);color:var(--highlight);}
+    .lang-trigger i{font-size:0.75rem;opacity:0.7;transition:transform 0.25s;}
+    .lang-trigger.open i{transform:rotate(180deg);}
+    .lang-flag{font-size:0.85rem;}
+    .lang-menu{
+      position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);
+      background:#080e1a;border:1px solid rgba(126,184,247,0.14);
+      border-radius:10px;overflow:hidden;min-width:140px;
+      box-shadow:0 16px 40px rgba(0,0,0,0.5);
+      opacity:0;pointer-events:none;transform:translateX(-50%) translateY(-6px);
+      transition:opacity 0.2s ease,transform 0.2s ease;
+      z-index:3000;
+    }
+    .lang-menu.open{opacity:1;pointer-events:all;transform:translateX(-50%) translateY(0);}
+    .lang-option{
+      display:flex;align-items:center;gap:10px;padding:11px 16px;
+      font-size:0.78rem;color:var(--silver-dim);cursor:pointer;
+      font-family:var(--font-body);letter-spacing:1px;transition:var(--transition);
+      border-bottom:1px solid rgba(126,184,247,0.06);
+    }
+    .lang-option:last-child{border-bottom:none;}
+    .lang-option:hover,.lang-option.active{background:var(--highlight-dim);color:var(--highlight);}
+    .lang-check{font-size:0.65rem;color:var(--highlight);opacity:0;flex-shrink:0;width:10px;}
+    .lang-option.active .lang-check{opacity:1;}
 
-    /* Language switcher inside banner */
-    .lang-switcher{position:absolute;right:18px;display:flex;gap:4px;}
-    .lang-btn{background:none;border:1px solid rgba(126,184,247,0.15);color:var(--silver-dim);padding:3px 8px;border-radius:4px;font-size:0.65rem;cursor:pointer;font-family:var(--font-body);letter-spacing:1px;transition:var(--transition);}
-    .lang-btn.active,.lang-btn:hover{background:var(--highlight-dim);border-color:var(--highlight);color:var(--highlight);}
-
-    /* On mobile, stack banner text + lang switcher vertically */
-    @media(max-width:1024px){
-      .greeting-banner{flex-direction:column;gap:5px;height:auto;min-height:var(--banner-h);padding:6px 16px;}
-      :root{--banner-h:64px;}
-      .lang-switcher{position:static;margin-top:0;}
-      .greeting-banner i{display:none;}
+    /* ── FLOATING PROMO PILL ── */
+    #promoPill{
+      position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(0);
+      background:linear-gradient(135deg,#0a1e3a,#112a50);
+      border:1px solid rgba(126,184,247,0.25);border-radius:50px;
+      padding:10px 18px 10px 16px;
+      display:flex;align-items:center;gap:12px;
+      box-shadow:0 8px 32px rgba(0,0,0,0.5),0 0 0 1px rgba(126,184,247,0.08);
+      z-index:1800;
+      transition:opacity 0.4s ease,transform 0.4s ease;
+      opacity:0;pointer-events:none;
+    }
+    #promoPill.show{opacity:1;pointer-events:all;}
+    #promoPill.hide{opacity:0;transform:translateX(-50%) translateY(12px);pointer-events:none;}
+    .pill-dot{width:6px;height:6px;border-radius:50%;background:var(--highlight);animation:pulse 2s infinite;flex-shrink:0;}
+    .pill-text{font-size:0.76rem;color:var(--accent-bright);white-space:nowrap;letter-spacing:0.5px;}
+    .pill-text strong{color:var(--highlight);}
+    .pill-cta{
+      background:var(--highlight);color:#04080f;padding:5px 14px;
+      border-radius:20px;font-size:0.7rem;font-weight:700;
+      text-decoration:none;letter-spacing:1px;text-transform:uppercase;
+      transition:var(--transition);white-space:nowrap;
+    }
+    .pill-cta:hover{filter:brightness(1.1);transform:scale(1.03);}
+    .pill-close{
+      background:none;border:none;color:var(--silver-dim);
+      cursor:pointer;font-size:0.9rem;line-height:1;padding:2px;
+      margin-left:2px;transition:color 0.2s;flex-shrink:0;
+    }
+    .pill-close:hover{color:var(--accent-bright);}
+    @media(max-width:640px){
+      #promoPill{left:16px;right:16px;transform:none;bottom:88px;}
+      #promoPill.hide{transform:translateY(12px);}
+      .pill-text{font-size:0.7rem;}
     }
 
     /* ── PRELOADER ── */
@@ -431,12 +463,10 @@
     /* ── MOBILE ── */
     @media(max-width:1024px){
       nav.side-nav{width:100%;height:68px;padding:0 20px;flex-direction:row;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(126,184,247,0.1);border-right:none;top:var(--banner-h);}
-      body.promo-visible nav.side-nav{top:calc(var(--banner-h) + var(--promo-h));}
       .logo{margin-bottom:0;font-size:1.8rem;}
       .logo-sub,.nav-footer,.nav-social,.nav-divider{display:none;}
       .mobile-menu-btn{display:flex;align-items:center;}
       .nav-links{position:fixed;top:calc(var(--banner-h) + 68px);left:-100%;width:100%;height:calc(100vh - var(--banner-h) - 68px);background:rgba(4,8,15,0.98);backdrop-filter:blur(20px);flex-direction:column;padding:30px;transition:left 0.4s ease;border-top:1px solid rgba(126,184,247,0.08);gap:4px;}
-      body.promo-visible .nav-links{top:calc(var(--banner-h) + var(--promo-h) + 68px);}
       .nav-links.mobile-open{left:0;}
       .nav-links a{font-size:1rem;padding:16px 14px;border-bottom:1px solid rgba(126,184,247,0.05);border-radius:0;}
       main{margin-left:0;width:100%;padding-top:68px;}
@@ -447,7 +477,6 @@
       .gallery-grid{grid-template-columns:1fr 1fr;grid-template-rows:200px 200px 200px;}
       .gallery-item:first-child{grid-row:auto;}
       .chef-img{height:340px;}
-      .lang-switcher{right:60px;}
     }
     @media(max-width:640px){
       section{padding:70px 5%;}
@@ -462,7 +491,6 @@
       .booking-card{padding:24px;}
       .loyalty-input-row{flex-direction:column;}
       .newsletter-form{flex-direction:column;}
-      .promo-text{font-size:0.72rem;}
     }
   </style>
 </head>
@@ -475,24 +503,28 @@
   <div class="loader-bar"><div class="loader-fill"></div></div>
 </div>
 
-<!-- PROMO BANNER -->
-<div id="promoBanner" role="alert">
-  <span class="promo-text" id="promoText">
-    🎉 <strong>SPRING OFFER:</strong> Free Aperol Spritz with any 2-course dine-in — this week only.
-    <a href="#reserve" class="promo-cta" id="promoCta">Book Now</a>
-  </span>
-  <button class="promo-close" id="promoCloseBtn" aria-label="Close promotion banner">×</button>
+<!-- TOP BAR: Language Dropdown -->
+<div class="greeting-banner" id="greetingBanner" role="banner">
+  <div class="lang-dropdown" id="langDropdown">
+    <button class="lang-trigger" id="langTrigger" type="button" aria-haspopup="listbox" aria-expanded="false">
+      <i class="fas fa-globe"></i>
+      <span id="langLabel">EN — English</span>
+      <i class="fas fa-chevron-down"></i>
+    </button>
+    <div class="lang-menu" id="langMenu" role="listbox">
+      <div class="lang-option active" data-lang="en" role="option"><i class="fas fa-check lang-check"></i><span>English</span></div>
+      <div class="lang-option" data-lang="de" role="option"><i class="fas fa-check lang-check"></i><span>Deutsch</span></div>
+      <div class="lang-option" data-lang="fr" role="option"><i class="fas fa-check lang-check"></i><span>Français</span></div>
+    </div>
+  </div>
 </div>
 
-<!-- GREETING BANNER -->
-<div class="greeting-banner" id="greetingBanner" role="banner">
-  <i class="fas fa-moon" aria-hidden="true"></i>
-  <span id="bannerText">Welcome to Savora</span>
-  <div class="lang-switcher" role="group" aria-label="Language switcher">
-    <button class="lang-btn active" data-lang="en">EN</button>
-    <button class="lang-btn" data-lang="de">DE</button>
-    <button class="lang-btn" data-lang="fr">FR</button>
-  </div>
+<!-- FLOATING PROMO PILL -->
+<div id="promoPill" role="complementary" aria-label="Special offer">
+  <div class="pill-dot"></div>
+  <span class="pill-text"><strong>Spring Offer</strong> — Free Aperol Spritz with any 2-course dine-in</span>
+  <a href="#reserve" class="pill-cta" id="pillCta">Reserve</a>
+  <button class="pill-close" id="pillCloseBtn" aria-label="Dismiss offer" type="button"><i class="fas fa-times"></i></button>
 </div>
 
 <!-- SIDE NAV -->
@@ -528,10 +560,6 @@
   <section id="home" class="hero">
     <div class="hero-content">
       <div class="hero-eyebrow" data-i18n="hero_eyebrow">Est. 2024 · Fine Gastronomy</div>
-      <div class="activity-indicator" aria-live="polite">
-        <div class="activity-dot"></div>
-        <span id="activityCount">12</span> <span data-i18n="hero_activity">guests viewing tables now</span>
-      </div>
       <h1 data-i18n="hero_h1">The Art of<br><em>Fine Dining.</em></h1>
       <p class="hero-subtext" data-i18n="hero_sub">Experience culinary poetry in the heart of Kaiserslautern. Dine in or order premium takeaway — crafted for those who appreciate the exceptional.</p>
       <div class="hero-ctas">
@@ -569,21 +597,21 @@
         <p class="chef-bio" data-i18n="chef_bio2">His philosophy is simple: honour the ingredient, respect the season, and surprise the guest. Each menu changes quarterly to reflect what's freshest, most vibrant, and most exciting.</p>
         <div class="chef-awards">
           <div class="chef-award reveal" style="transition-delay:0.2s;">
-            <div class="award-icon">🌟</div>
+            <div class="award-icon"><i class="fas fa-star" style="color:var(--highlight);font-size:1.2rem;"></i></div>
             <div class="award-text">
               <strong data-i18n="award1_title">Gault &amp; Millau — 16 Points</strong>
               <span data-i18n="award1_sub">Awarded 2023 · Rhine-Palatinate Region</span>
             </div>
           </div>
           <div class="chef-award reveal" style="transition-delay:0.3s;">
-            <div class="award-icon">🏆</div>
+            <div class="award-icon"><i class="fas fa-trophy" style="color:var(--highlight);font-size:1.2rem;"></i></div>
             <div class="award-text">
               <strong data-i18n="award2_title">Best Fine Dining — Kaiserslautern 2024</strong>
               <span data-i18n="award2_sub">Voted by local gastronomic society</span>
             </div>
           </div>
           <div class="chef-award reveal" style="transition-delay:0.4s;">
-            <div class="award-icon">🍽️</div>
+            <div class="award-icon"><i class="fas fa-seedling" style="color:var(--highlight);font-size:1.2rem;"></i></div>
             <div class="award-text">
               <strong data-i18n="award3_title">Sustainable Kitchen Certified</strong>
               <span data-i18n="award3_sub">95% locally sourced ingredients</span>
@@ -702,17 +730,17 @@
         <p class="loyalty-desc" data-i18n="loyalty_desc">Join the Savora Rewards programme and earn points on every visit, takeaway order, and reservation. Redeem for exclusive experiences, complimentary dishes, and member-only events.</p>
         <div class="loyalty-tiers">
           <div class="loyalty-tier tier-bronze">
-            <div class="tier-icon">🥉</div>
+            <div class="tier-icon"><i class="fas fa-medal" style="color:#cd7f32;"></i></div>
             <div class="tier-info"><strong data-i18n="tier_bronze">Bronze Member</strong><span data-i18n="tier_bronze_sub">0 – 499 pts · Welcome gift + 1x points</span></div>
             <div class="tier-pts" data-i18n="tier_bronze_pts">1pt/€</div>
           </div>
           <div class="loyalty-tier tier-silver-l">
-            <div class="tier-icon">🥈</div>
+            <div class="tier-icon"><i class="fas fa-medal" style="color:#a0aec0;"></i></div>
             <div class="tier-info"><strong data-i18n="tier_silver">Silver Member</strong><span data-i18n="tier_silver_sub">500 – 1499 pts · Priority booking + 1.5x points</span></div>
             <div class="tier-pts" data-i18n="tier_silver_pts">1.5pt/€</div>
           </div>
           <div class="loyalty-tier tier-gold">
-            <div class="tier-icon">🥇</div>
+            <div class="tier-icon"><i class="fas fa-medal" style="color:#7eb8f7;"></i></div>
             <div class="tier-info"><strong data-i18n="tier_gold">Gold Member</strong><span data-i18n="tier_gold_sub">1500+ pts · Chef's table access + 2x points</span></div>
             <div class="tier-pts" data-i18n="tier_gold_pts">2pt/€</div>
           </div>
@@ -763,7 +791,7 @@
         </div>
       </div>
       <div class="newsletter-success" id="newsletterSuccess">
-        <i class="fas fa-envelope-open-text"></i>
+        <i class="fas fa-envelope-open-text" style="font-size:2.2rem;color:var(--highlight);display:block;margin-bottom:10px;"></i>
         <h3 style="font-family:var(--font-heading);font-size:1.8rem;font-weight:400;margin-bottom:8px;" data-i18n="newsletter_thanks">You're on the list!</h3>
         <p style="color:var(--text-muted);font-size:0.88rem;" data-i18n="newsletter_thanks_sub">Welcome to the Savora inner circle. Expect something special in your inbox soon.</p>
       </div>
@@ -1032,15 +1060,15 @@ const i18n = {
   }
 };
 
-let currentLang = 'en';
-function applyLang(lang) {
-  currentLang = lang;
-  document.documentElement.setAttribute('lang', lang);
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    if (i18n[lang][key] !== undefined) el.innerHTML = i18n[lang][key];
-  });
-  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-lang') === lang));
+const langLabels={en:'EN — English',de:'DE — Deutsch',fr:'FR — Français'};
+let currentLang='en';
+function applyLang(lang){
+  currentLang=lang;
+  document.documentElement.setAttribute('lang',lang);
+  document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');if(i18n[lang][k]!==undefined)el.innerHTML=i18n[lang][k];});
+  // update dropdown UI
+  document.getElementById('langLabel').textContent=langLabels[lang];
+  document.querySelectorAll('.lang-option').forEach(o=>{o.classList.toggle('active',o.getAttribute('data-lang')===lang);});
 }
 
 /* =========================================================
@@ -1138,8 +1166,8 @@ let currentSeason='summer',currentCategory='All';
 let cart=[];try{cart=JSON.parse(localStorage.getItem('savora_cart'))||[];}catch{}
 
 function getItemPrice(item){return item.seasonal?.[currentSeason]??item.price;}
-function formatTags(tags){let h='';if(tags.includes('V'))h+=`<span class="diet-icon veg">🌱 V</span>`;if(tags.includes('GF'))h+=`<span class="diet-icon gf">GF</span>`;if(tags.includes('S'))h+=`<span class="diet-icon spicy">🌶️ Spicy</span>`;return h;}
-function formatBadge(b){const m={hot:['badge-hot','🔥 Popular'],chef:['badge-chef','⭐ Chef Pick'],new:['badge-new','🆕 New']};if(!m[b])return'';return`<span class="smart-badge ${m[b][0]}">${m[b][1]}</span>`;}
+function formatTags(tags){let h='';if(tags.includes('V'))h+=`<span class="diet-icon veg"><i class="fas fa-leaf"></i> V</span>`;if(tags.includes('GF'))h+=`<span class="diet-icon gf">GF</span>`;if(tags.includes('S'))h+=`<span class="diet-icon spicy"><i class="fas fa-fire-alt"></i> Spicy</span>`;return h;}
+function formatBadge(b){const m={hot:['badge-hot','<i class="fas fa-chart-line"></i> Popular'],chef:['badge-chef','<i class="fas fa-star"></i> Chef Pick'],new:['badge-new','<i class="fas fa-certificate"></i> New']};if(!m[b])return'';return`<span class="smart-badge ${m[b][0]}">${m[b][1]}</span>`;}
 
 /* =========================================================
    MENU RENDER
@@ -1328,16 +1356,28 @@ function createLangSwitcher(){
   return d;
 }
 
-/* =========================================================
-   PROMO BANNER
-   ========================================================= */
-function initPromo(){
-  const dismissed=sessionStorage.getItem('savora_promo_dismissed');
-  if(!dismissed){
-    const banner=document.getElementById('promoBanner');
-    banner.classList.add('show');
-    document.body.classList.add('promo-visible');
-  }
+/* ── FLOATING PROMO PILL ── */
+function initPromoPill(){
+  if(sessionStorage.getItem('savora_pill_dismissed'))return;
+  const pill=document.getElementById('promoPill');
+  let shown=false,dismissed=false;
+  // Show after user scrolls 300px
+  window.addEventListener('scroll',()=>{
+    if(dismissed)return;
+    if(window.scrollY>300&&!shown){shown=true;pill.classList.add('show');}
+    // Hide temporarily when near bottom (cart area)
+    const nearBottom=window.scrollY+window.innerHeight>document.body.scrollHeight-120;
+    pill.classList.toggle('hide',nearBottom);
+  },{passive:true});
+  document.getElementById('pillCloseBtn').addEventListener('click',()=>{
+    dismissed=true;pill.classList.remove('show');pill.classList.add('hide');
+    sessionStorage.setItem('savora_pill_dismissed','1');
+  });
+  // Also hide pill when user clicks Reserve
+  document.getElementById('pillCta').addEventListener('click',()=>{
+    dismissed=true;pill.classList.remove('show');
+    sessionStorage.setItem('savora_pill_dismissed','1');
+  });
 }
 
 /* =========================================================
@@ -1366,8 +1406,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
   // Preloader
   setTimeout(()=>{const p=document.getElementById('preloader');p.style.opacity='0';setTimeout(()=>p.style.display='none',600);},1100);
 
-  initBanner();
-  initPromo();
+  initPromoPill();
   applyLang('en');
   renderMenu(menuData);
   renderReviews();
@@ -1375,9 +1414,6 @@ document.addEventListener('DOMContentLoaded',async()=>{
   renderAnalytics();
   updateLoyaltyCard();
   setTimeout(initReveal,200);
-
-  // Activity counter
-  setInterval(()=>{const el=document.getElementById('activityCount');if(el)el.innerText=Math.max(4,Math.min(28,parseInt(el.innerText)+(Math.random()>0.5?1:-1)));},28000);
 
   // Date picker
   const dateIn=document.getElementById('resDate'),today=new Date().toISOString().split('T')[0],maxD=new Date();maxD.setMonth(maxD.getMonth()+6);
@@ -1423,16 +1459,28 @@ document.addEventListener('DOMContentLoaded',async()=>{
   /* ── GLOBAL CLICK ── */
   document.addEventListener('click',e=>{
 
-    // Lang switcher
-    const langBtn=e.target.closest('.lang-btn');
-    if(langBtn){applyLang(langBtn.getAttribute('data-lang'));return;}
-
-    // Promo close
-    if(e.target.id==='promoCloseBtn'){
-      const banner=document.getElementById('promoBanner');
-      banner.classList.remove('show');document.body.classList.remove('promo-visible');
-      sessionStorage.setItem('savora_promo_dismissed','1');
+    // Lang dropdown toggle
+    if(e.target.closest('#langTrigger')){
+      const menu=document.getElementById('langMenu'),trigger=document.getElementById('langTrigger');
+      const open=menu.classList.toggle('open');
+      trigger.classList.toggle('open',open);
+      trigger.setAttribute('aria-expanded',String(open));
       return;
+    }
+    // Lang option select
+    const langOpt=e.target.closest('.lang-option');
+    if(langOpt){
+      applyLang(langOpt.getAttribute('data-lang'));
+      document.getElementById('langMenu').classList.remove('open');
+      document.getElementById('langTrigger').classList.remove('open');
+      document.getElementById('langTrigger').setAttribute('aria-expanded','false');
+      return;
+    }
+    // Close lang dropdown when clicking outside
+    if(!e.target.closest('#langDropdown')){
+      document.getElementById('langMenu').classList.remove('open');
+      document.getElementById('langTrigger').classList.remove('open');
+      document.getElementById('langTrigger').setAttribute('aria-expanded','false');
     }
 
     // Mobile nav
