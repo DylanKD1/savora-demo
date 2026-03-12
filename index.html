@@ -633,13 +633,13 @@
         <input type="text" id="menuSearch" placeholder="Search dishes…" autocomplete="off"/>
       </div>
       <div class="season-toggle" role="group" aria-label="Season menu">
-        <button class="season-btn active" data-season="summer" type="button" aria-pressed="true">☀️ Summer</button>
-        <button class="season-btn" data-season="winter" type="button" aria-pressed="false">❄️ Winter</button>
+        <button class="season-btn active" data-season="summer" type="button" aria-pressed="true"><i class="fas fa-sun"></i> Summer</button>
+        <button class="season-btn" data-season="winter" type="button" aria-pressed="false"><i class="fas fa-snowflake"></i> Winter</button>
       </div>
       <div class="filter-chips" role="group" aria-label="Category filters">
         <button class="chip active" data-category="All" type="button">All</button>
-        <button class="chip" data-category="Starters" type="button">Starters</button>
-        <button class="chip" data-category="Mains" type="button">Mains</button>
+        <button class="chip" data-category="Mains" type="button">Mains &amp; Wurst</button>
+        <button class="chip" data-category="Sides" type="button">Sides</button>
         <button class="chip" data-category="Desserts" type="button">Desserts</button>
         <button class="chip" data-category="Drinks" type="button">Drinks</button>
       </div>
@@ -706,11 +706,16 @@
               <p class="preorder-note">Pre-ordering expedites your service — kitchen prepares before arrival.</p>
               <select id="preorderSelect">
                 <option value="None">No pre-order</option>
-                <option value="Chef's Tasting Menu (Full Table)">Full Chef's Tasting Menu</option>
-                <option value="Burrata & Heirloom (Starter)">Starter: Burrata &amp; Heirloom</option>
-                <option value="Sommelier Wine Pairing">Sommelier Wine Pairing Package</option>
-                <option value="Dry-Aged Ribeye (Main)">Main: Dry-Aged Ribeye</option>
-                <option value="Lobster Ravioli (Main)">Main: Lobster Ravioli</option>
+                <option value="Wiener Schnitzel">Main: Wiener Schnitzel</option>
+                <option value="Jägerschnitzel">Main: Jägerschnitzel</option>
+                <option value="Rouladen">Main: Rouladen</option>
+                <option value="Schweinshaxe">Main: Schweinshaxe</option>
+                <option value="Bratwurst">Wurst: Bratwurst</option>
+                <option value="Nürnberger Rostbratwurst">Wurst: Nürnberger Rostbratwurst</option>
+                <option value="Flammkuchen">Specialty: Flammkuchen</option>
+                <option value="Käsespätzle">Side: Käsespätzle</option>
+                <option value="Apfelstrudel">Dessert: Apfelstrudel</option>
+                <option value="Schwarzwälder Kirschtorte">Dessert: Schwarzwälder Kirschtorte</option>
               </select>
             </div>
           </div>
@@ -1133,33 +1138,40 @@ class ApiService{
    MENU DATA
    ========================================================= */
 const menuData=[
-  {id:'s-bruschetta',name:'Bruschetta Roma',desc:'Grilled artisan bread, garlic, heirloom tomatoes, fresh basil.',price:9.5,category:'Starters',tags:['V'],allergens:'Gluten, Garlic',badge:null,pairs:['d-red-wine'],img:'https://images.unsplash.com/photo-1572695157366-5e585ab2b69f?auto=format&fit=crop&w=300&q=80'},
-  {id:'s-arancini',name:'Truffle Arancini',desc:'Crispy risotto balls stuffed with wild mushrooms and mozzarella.',price:13.5,category:'Starters',tags:['V'],allergens:'Dairy, Gluten',badge:'hot',pairs:['d-red-wine'],img:'https://images.unsplash.com/photo-1541529086526-db283c563270?auto=format&fit=crop&w=300&q=80'},
-  {id:'s-burrata',name:'Burrata & Heirloom',desc:'Creamy fresh burrata with seasonal tomatoes and aged balsamic glaze.',price:16.0,category:'Starters',tags:['V','GF'],allergens:'Dairy',badge:'chef',pairs:['d-chardonnay'],img:'https://images.unsplash.com/photo-1608897013039-887f21d8c804?auto=format&fit=crop&w=300&q=80'},
-  {id:'s-calamari',name:'Crispy Calamari',desc:'Lightly dusted squid rings, served with house lemon aioli.',price:14.5,category:'Starters',tags:[],allergens:'Seafood, Gluten',badge:null,pairs:['d-sparkling'],img:'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=300&q=80'},
-  {id:'s-tartare',name:'Beef Tartare',desc:'Hand-cut prime beef, capers, shallots, quail egg yolk.',price:19.0,category:'Starters',tags:['GF'],allergens:'Egg',badge:null,pairs:['d-negroni'],img:'https://images.unsplash.com/photo-1588168333986-5078d3ae3976?auto=format&fit=crop&w=300&q=80'},
-  {id:'s-carpaccio',name:'Tuna Carpaccio',desc:'Thinly sliced raw tuna, citrus dressing, micro herbs, sesame.',price:17.5,category:'Starters',tags:['GF'],allergens:'Seafood, Sesame',badge:'new',pairs:['d-chardonnay'],img:'https://images.unsplash.com/photo-1573140247632-f8fd74997d5c?auto=format&fit=crop&w=300&q=80'},
-  {id:'m-ribeye',name:'Dry-Aged Ribeye',desc:'12oz prime cut, garlic herb butter, rosemary potatoes, red wine jus.',price:38.9,category:'Mains',tags:['GF'],allergens:'Dairy',badge:'chef',pairs:['d-red-wine','s-arancini'],seasonal:{summer:38.9,winter:41.9},img:'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=300&q=80'},
-  {id:'m-linguine',name:'Spicy Seafood Linguine',desc:'Prawns, mussels, fiery arrabbiata sauce, fresh parsley.',price:28.9,category:'Mains',tags:['S'],allergens:'Shellfish, Gluten',badge:'hot',pairs:['d-chardonnay'],img:'https://images.unsplash.com/photo-1563379926898-05f4575a45d8?auto=format&fit=crop&w=300&q=80'},
-  {id:'m-risotto',name:'Wild Mushroom Risotto',desc:'Arborio rice, porcini, truffle oil, aged parmesan, crispy sage.',price:24.5,category:'Mains',tags:['V','GF'],allergens:'Dairy',badge:null,pairs:['d-red-wine'],img:'https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=300&q=80'},
-  {id:'m-salmon',name:'Pan-Seared Salmon',desc:'Atlantic salmon fillet, asparagus, lemon dill cream sauce, capers.',price:30.0,category:'Mains',tags:['GF'],allergens:'Seafood, Dairy',badge:null,pairs:['d-chardonnay'],img:'https://images.unsplash.com/photo-1485921325833-c519f76c4927?auto=format&fit=crop&w=300&q=80'},
-  {id:'m-duck',name:"Duck Breast à l'Orange",desc:'Crispy skin duck breast, sweet potato purée, orange glaze, star anise.',price:34.0,category:'Mains',tags:['GF'],allergens:'None',badge:'chef',pairs:['d-red-wine'],img:'https://images.unsplash.com/photo-1518063063539-7de954f9a066?auto=format&fit=crop&w=300&q=80'},
-  {id:'m-ravioli',name:'Lobster Ravioli',desc:'Handmade pasta stuffed with lobster in a saffron cream sauce.',price:32.0,category:'Mains',tags:[],allergens:'Dairy, Shellfish, Gluten',badge:'hot',pairs:['d-chardonnay'],img:'https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=300&q=80'},
-  {id:'m-eggplant',name:'Eggplant Parmigiana',desc:'Layered crispy eggplant, rich tomato sauce, melted mozzarella, basil oil.',price:21.5,category:'Mains',tags:['V'],allergens:'Dairy, Gluten',badge:null,pairs:['d-negroni'],img:'https://images.unsplash.com/photo-1625938146369-ce5fc7b1d4fa?auto=format&fit=crop&w=300&q=80'},
-  {id:'m-filet',name:'Filet Mignon',desc:'8oz tenderloin, truffle red wine reduction, charred broccolini.',price:43.0,category:'Mains',tags:['GF'],allergens:'None',badge:null,pairs:['d-red-wine'],img:'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=300&q=80'},
-  {id:'d-tiramisu',name:'Classic Tiramisu',desc:'Espresso-soaked ladyfingers, velvety mascarpone cream, cocoa dust.',price:9.9,category:'Desserts',tags:['V'],allergens:'Dairy, Gluten',badge:'hot',pairs:['d-espresso'],img:'https://images.unsplash.com/photo-1571115177098-24ecfa1491d2?auto=format&fit=crop&w=300&q=80'},
-  {id:'d-pannacotta',name:'Vanilla Panna Cotta',desc:'Silky Italian custard topped with mixed berry compote, mint.',price:8.5,category:'Desserts',tags:['V','GF'],allergens:'Dairy',badge:null,pairs:['d-espresso'],img:'https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=300&q=80'},
-  {id:'d-lava',name:'Chocolate Lava Cake',desc:'Warm molten dark chocolate cake with vanilla bean gelato, raspberry.',price:11.5,category:'Desserts',tags:['V'],allergens:'Dairy, Gluten',badge:'chef',pairs:['d-espresso'],img:'https://images.unsplash.com/photo-1624353365286-3f8d62daad51?auto=format&fit=crop&w=300&q=80'},
-  {id:'d-creme',name:'Crème Brûlée',desc:'Rich custard topped with a layer of perfectly torched caramel.',price:10.5,category:'Desserts',tags:['V','GF'],allergens:'Dairy, Egg',badge:null,pairs:['d-champagne'],img:'https://images.unsplash.com/photo-1470124182917-cc6e71b22ceb?auto=format&fit=crop&w=300&q=80'},
-  {id:'d-lemon',name:'Amalfi Lemon Tart',desc:'Zesty lemon curd in a buttery shortbread crust, candied citrus zest.',price:9.5,category:'Desserts',tags:['V'],allergens:'Dairy, Gluten, Egg',badge:'new',pairs:['d-champagne'],img:'https://images.unsplash.com/photo-1519915028121-7d3463d20b13?auto=format&fit=crop&w=300&q=80'},
-  {id:'d-red-wine',name:'House Red Wine',desc:'Notes of dark cherry, oak and blackcurrant. (Glass)',price:9.5,category:'Drinks',tags:['V','GF'],allergens:'Sulfites',badge:null,pairs:[],seasonal:{summer:9.5,winter:9.0},img:'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=300&q=80'},
-  {id:'d-chardonnay',name:'Oak Chardonnay',desc:'Buttery finish with hints of vanilla and toasted oak. (Glass)',price:12.0,category:'Drinks',tags:['V','GF'],allergens:'Sulfites',badge:null,pairs:[],img:'https://images.unsplash.com/photo-1585553616435-2dc0a54e271d?auto=format&fit=crop&w=300&q=80'},
-  {id:'d-espresso',name:'Single Espresso',desc:'Italian dark roast. The perfect post-meal digestif.',price:3.8,category:'Drinks',tags:['V','GF'],allergens:'None',badge:null,pairs:[],img:'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?auto=format&fit=crop&w=300&q=80'},
-  {id:'d-negroni',name:'Classic Negroni',desc:'Gin, Campari, Sweet Vermouth. An Italian aperitif classic.',price:13.5,category:'Drinks',tags:['V','GF'],allergens:'None',badge:'hot',pairs:[],img:'https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=300&q=80'},
-  {id:'d-sparkling',name:'San Pellegrino',desc:'Sparkling mineral water, chilled, served with lemon.',price:4.5,category:'Drinks',tags:['V','GF'],allergens:'None',badge:null,pairs:[],img:'https://images.unsplash.com/photo-1523362628745-0c100150b504?auto=format&fit=crop&w=300&q=80'},
-  {id:'d-champagne',name:'Vintage Champagne',desc:'Crisp, elegant bubbles. Celebrations done right. (Glass)',price:19.0,category:'Drinks',tags:['V','GF'],allergens:'Sulfites',badge:'chef',pairs:[],img:'https://images.unsplash.com/photo-1599939571322-792a326e9086?auto=format&fit=crop&w=300&q=80'},
-  {id:'d-aperol',name:'Aperol Spritz',desc:'Aperol, Prosecco, soda, orange slice. Light and refreshing.',price:9.5,category:'Drinks',tags:['V','GF'],allergens:'None',badge:null,pairs:[],img:'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=300&q=80'},
-  {id:'d-matcha',name:'Matcha Latte',desc:'Ceremonial grade matcha served over ice with oat milk.',price:6.0,category:'Drinks',tags:['V','GF'],allergens:'None',badge:'new',pairs:[],img:'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?auto=format&fit=crop&w=300&q=80'},
+  /* ── MAIN DISHES ── */
+  {id:'m-wiener',name:'Wiener Schnitzel',desc:'Classic breaded veal cutlet, fried golden crisp, served with lemon and parsley potatoes.',price:22.9,category:'Mains',tags:['GF'],allergens:'Gluten, Egg',badge:'hot',pairs:['d-pilsner','m-kartoffelsalat'],img:'https://images.unsplash.com/photo-1599921841143-819065a55cc6?auto=format&fit=crop&w=300&q=80'},
+  {id:'m-jaeger',name:'Jägerschnitzel',desc:'Pan-fried schnitzel topped with a rich creamy mushroom and forest herb sauce.',price:23.9,category:'Mains',tags:[],allergens:'Gluten, Dairy, Egg',badge:'chef',pairs:['d-helles','m-spaetzle'],img:'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=300&q=80'},
+  {id:'m-sauerbraten',name:'Sauerbraten',desc:'Traditional marinated pot roast in sweet-sour gravy with raisins, served with Knödel.',price:26.9,category:'Mains',tags:['GF'],allergens:'None',badge:null,pairs:['d-pilsner','m-rotkohl'],img:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=300&q=80'},
+  {id:'m-rouladen',name:'Rouladen',desc:'Tender beef rolls filled with Dijon mustard, smoked bacon, onions and gherkins, braised in dark jus.',price:27.5,category:'Mains',tags:[],allergens:'Mustard',badge:'chef',pairs:['d-pilsner','m-spaetzle'],img:'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=300&q=80'},
+  {id:'m-haxe',name:'Schweinshaxe',desc:'Slow-roasted pork knuckle with impossibly crispy crackling, beer gravy and sauerkraut.',price:24.9,category:'Mains',tags:['GF'],allergens:'None',badge:'hot',pairs:['d-weizen','m-sauerkraut'],img:'https://images.unsplash.com/photo-1432139555190-58524dae6a55?auto=format&fit=crop&w=300&q=80'},
+  {id:'m-schweinebraten',name:'Schweinebraten',desc:'Sunday roast pork with golden crackling, natural pan jus and braised Rotkohl.',price:23.5,category:'Mains',tags:['GF'],allergens:'None',badge:null,pairs:['d-pilsner','m-rotkohl'],img:'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?auto=format&fit=crop&w=300&q=80'},
+  {id:'m-zwiebelrostbraten',name:'Zwiebelrostbraten',desc:'Seared beef sirloin steak, piled high with crispy golden fried onions and pan sauce.',price:29.9,category:'Mains',tags:['GF'],allergens:'None',badge:'new',pairs:['d-pilsner','m-bratkartoffeln'],img:'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=300&q=80'},
+  /* ── SAUSAGES ── */
+  {id:'m-bratwurst',name:'Bratwurst',desc:'Grilled Bavarian pork sausage with stone-ground mustard and house sauerkraut.',price:14.9,category:'Mains',tags:[],allergens:'Gluten',badge:'hot',pairs:['d-pilsner','m-sauerkraut'],img:'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=300&q=80'},
+  {id:'m-currywurst',name:'Currywurst',desc:'Berlin-style sliced pork sausage smothered in spiced curry-ketchup sauce, with crispy Pommes.',price:13.5,category:'Mains',tags:[],allergens:'Gluten',badge:'hot',pairs:['d-radler'],img:'https://images.unsplash.com/photo-1626200419199-391ae4be7a41?auto=format&fit=crop&w=300&q=80'},
+  {id:'m-weisswurst',name:'Weisswurst',desc:'Traditional Bavarian white veal sausage, gently simmered, served with sweet mustard and pretzel.',price:15.5,category:'Mains',tags:[],allergens:'Gluten, Egg, Dairy',badge:null,pairs:['d-weizen'],img:'https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=300&q=80'},
+  {id:'m-nuernberger',name:'Nürnberger Rostbratwurst',desc:'Six small, spicy Nuremberg finger-sausages grilled over beech wood, with Sauerkraut.',price:16.5,category:'Mains',tags:[],allergens:'Gluten',badge:'chef',pairs:['d-pilsner','m-sauerkraut'],img:'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?auto=format&fit=crop&w=300&q=80'},
+  /* ── REGIONAL SPECIALTIES ── */
+  {id:'m-maultaschen',name:'Maultaschen',desc:'Swabian stuffed pasta pockets filled with minced meat and spinach, pan-fried in butter.',price:18.9,category:'Mains',tags:[],allergens:'Gluten, Egg, Dairy',badge:'new',pairs:['d-helles'],img:'https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=300&q=80'},
+  {id:'m-flammkuchen',name:'Flammkuchen',desc:'Alsatian thin-crust tart spread with crème fraîche, smoked lardons and silky onions.',price:16.9,category:'Mains',tags:[],allergens:'Gluten, Dairy',badge:'chef',pairs:['d-pilsner'],img:'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=300&q=80'},
+  {id:'m-leberkase',name:'Leberkäse',desc:'Baked Bavarian meatloaf, sliced thick and served hot with sweet mustard and Bratkartoffeln.',price:15.9,category:'Mains',tags:[],allergens:'Gluten',badge:null,pairs:['d-pilsner','m-bratkartoffeln'],img:'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=300&q=80'},
+  {id:'m-saumagen',name:'Saumagen',desc:'Rhineland-Palatinate stuffed pork stomach with potatoes and spices — Helmut Kohl\'s favourite.',price:21.9,category:'Mains',tags:[],allergens:'None',badge:'new',pairs:['d-pilsner','m-rotkohl'],img:'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=300&q=80'},
+  /* ── SIDES ── */
+  {id:'m-sauerkraut',name:'Sauerkraut',desc:'House-fermented white cabbage, slow-braised with juniper berries and bay leaf.',price:5.5,category:'Sides',tags:['V','GF'],allergens:'None',badge:null,pairs:['d-pilsner'],img:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=300&q=80'},
+  {id:'m-kartoffelsalat',name:'Kartoffelsalat',desc:'Warm Swabian potato salad tossed in tangy vinegar dressing with chives and bacon.',price:6.5,category:'Sides',tags:['GF'],allergens:'Mustard',badge:'hot',pairs:['m-bratwurst'],img:'https://images.unsplash.com/photo-1590301157890-4810ed352733?auto=format&fit=crop&w=300&q=80'},
+  {id:'m-spaetzle',name:'Käsespätzle',desc:'Handmade soft egg noodles loaded with melted Allgäu mountain cheese and crispy onions.',price:8.5,category:'Sides',tags:['V'],allergens:'Gluten, Egg, Dairy',badge:'chef',pairs:['m-jaeger','m-sauerbraten'],img:'https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=300&q=80'},
+  {id:'m-bratkartoffeln',name:'Bratkartoffeln',desc:'Pan-fried potatoes with onions, smoked bacon and fresh herbs.',price:6.5,category:'Sides',tags:['GF'],allergens:'None',badge:null,pairs:['m-zwiebelrostbraten'],img:'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=300&q=80'},
+  {id:'m-rotkohl',name:'Rotkohl',desc:'Sweet and sour braised red cabbage with apples, cloves and a hint of red wine.',price:5.5,category:'Sides',tags:['V','GF'],allergens:'None',badge:null,pairs:['m-sauerbraten','m-rouladen'],img:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=300&q=80'},
+  {id:'m-knoedel',name:'Semmelknödel',desc:'Classic Bavarian bread dumplings — fluffy, soaking up every drop of gravy.',price:5.9,category:'Sides',tags:['V'],allergens:'Gluten, Dairy, Egg',badge:null,pairs:['m-haxe','m-sauerbraten'],img:'https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?auto=format&fit=crop&w=300&q=80'},
+  /* ── DESSERTS ── */
+  {id:'d-strudel',name:'Apfelstrudel',desc:'Crisp layered pastry filled with spiced apples, cinnamon and raisins — served warm with vanilla sauce.',price:8.9,category:'Desserts',tags:['V'],allergens:'Gluten, Dairy',badge:'hot',pairs:['d-weizen'],img:'https://images.unsplash.com/photo-1519915028121-7d3463d20b13?auto=format&fit=crop&w=300&q=80'},
+  {id:'d-schwarzwald',name:'Schwarzwälder Kirschtorte',desc:'Black Forest cherry cake — layers of chocolate sponge, Kirsch cream and fresh cherries.',price:9.5,category:'Desserts',tags:['V'],allergens:'Gluten, Dairy, Egg',badge:'chef',pairs:['d-helles'],img:'https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=300&q=80'},
+  {id:'d-rotegruetze',name:'Rote Grütze',desc:'Northwest German red berry pudding — raspberries, redcurrants and cherries with vanilla sauce.',price:7.9,category:'Desserts',tags:['V','GF'],allergens:'Dairy',badge:'new',pairs:['d-weizen'],img:'https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=300&q=80'},
+  /* ── DRINKS ── */
+  {id:'d-pilsner',name:'Pilsner',desc:'Crisp German lager — Bitburger, Warsteiner or Beck\'s. Served cold in a Krug.',price:4.9,category:'Drinks',tags:['V','GF'],allergens:'Gluten',badge:'hot',pairs:[],img:'https://images.unsplash.com/photo-1608270586620-248524c67de9?auto=format&fit=crop&w=300&q=80'},
+  {id:'d-helles',name:'Helles',desc:'Soft Munich-style pale lager with delicate malt sweetness. Paulaner or Hacker-Pschorr.',price:5.2,category:'Drinks',tags:['V','GF'],allergens:'Gluten',badge:null,pairs:[],img:'https://images.unsplash.com/photo-1535958636474-b021ee887b13?auto=format&fit=crop&w=300&q=80'},
+  {id:'d-weizen',name:'Weizenbier',desc:'Bavarian wheat beer with classic banana and clove aroma. Franziskaner — cloudy and refreshing.',price:5.5,category:'Drinks',tags:['V','GF'],allergens:'Gluten',badge:'chef',pairs:[],img:'https://images.unsplash.com/photo-1561758033-d89a9ad46330?auto=format&fit=crop&w=300&q=80'},
+  {id:'d-radler',name:'Radler',desc:'Half wheat beer, half fresh lemonade. Germany\'s ultimate summer refresher.',price:4.5,category:'Drinks',tags:['V','GF'],allergens:'Gluten',badge:'new',pairs:['m-currywurst','m-bratwurst'],img:'https://images.unsplash.com/photo-1570696516188-ade861b84a49?auto=format&fit=crop&w=300&q=80'},
 ];
 
 let currentSeason='summer',currentCategory='All';
@@ -1174,11 +1186,11 @@ function formatBadge(b){const m={hot:['badge-hot','<i class="fas fa-chart-line">
    ========================================================= */
 function renderMenu(items){
   const list=document.getElementById('fullMenuList');list.innerHTML='';
-  ['Starters','Mains','Desserts','Drinks'].forEach(cat=>{
+  ['Mains','Sides','Desserts','Drinks'].forEach(cat=>{
     const ci=items.filter(i=>i.category===cat);if(!ci.length)return;
     let html=`<div class="menu-category" role="listitem"><h3>${cat}</h3>`;
     ci.forEach(item=>{
-      const price=getItemPrice(item),sm=item.seasonal?(currentSeason==='winter'?' ❄️':' ☀️'):'';
+      const price=getItemPrice(item),sm=item.seasonal?(currentSeason==='winter'?' <i class="fas fa-snowflake" style="font-size:0.6rem;opacity:0.7;"></i>':' <i class="fas fa-sun" style="font-size:0.6rem;opacity:0.7;"></i>'):'';
       html+=`<div class="list-item" data-action="open-modal" data-id="${item.id}" role="article" tabindex="0" aria-label="${escapeHTML(item.name)}">
         <img loading="lazy" src="${item.img}" alt="${escapeHTML(item.name)}" class="dish-preview" width="96" height="96"/>
         <div class="item-info"><h4>${escapeHTML(item.name)} ${formatTags(item.tags)} ${formatBadge(item.badge)}</h4><p>${escapeHTML(item.desc)}</p></div>
