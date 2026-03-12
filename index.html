@@ -65,6 +65,14 @@
     .lang-btn{background:none;border:1px solid rgba(126,184,247,0.15);color:var(--silver-dim);padding:3px 8px;border-radius:4px;font-size:0.65rem;cursor:pointer;font-family:var(--font-body);letter-spacing:1px;transition:var(--transition);}
     .lang-btn.active,.lang-btn:hover{background:var(--highlight-dim);border-color:var(--highlight);color:var(--highlight);}
 
+    /* On mobile, stack banner text + lang switcher vertically */
+    @media(max-width:1024px){
+      .greeting-banner{flex-direction:column;gap:5px;height:auto;min-height:var(--banner-h);padding:6px 16px;}
+      :root{--banner-h:64px;}
+      .lang-switcher{position:static;margin-top:0;}
+      .greeting-banner i{display:none;}
+    }
+
     /* ── PRELOADER ── */
     #preloader{position:fixed;inset:0;background:var(--bg-dark);z-index:9999;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:28px;transition:opacity 0.6s ease;}
     .loader-logo{font-family:var(--font-heading);font-size:4rem;color:var(--accent-bright);letter-spacing:12px;font-weight:300;animation:fadeInUp 0.8s ease forwards;}
@@ -454,7 +462,6 @@
       .booking-card{padding:24px;}
       .loyalty-input-row{flex-direction:column;}
       .newsletter-form{flex-direction:column;}
-      .lang-switcher{display:none;}
       .promo-text{font-size:0.72rem;}
     }
   </style>
